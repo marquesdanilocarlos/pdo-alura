@@ -2,12 +2,15 @@
 
 namespace Alura\Pdo\Database\Repository;
 
+use Alura\Pdo\Domain\Model\Phone;
 use Alura\Pdo\Domain\Model\Student;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PDO;
 use PDOException;
 
+use function array_key_exists;
+use function array_keys;
 use function count;
 
 class StudentRepository implements StudentRepositoryInterface
@@ -148,5 +151,43 @@ class StudentRepository implements StudentRepositoryInterface
 
         return $hydrateData;
     }
+
+    public function getWithPhones(): array
+    {
+        $query = "SELECT 
+                    students.id,
+                    students.name,
+                    students.birth_date,
+                    phones.id as phone_id,
+                    phones.area_code,
+                    phones.number
+                    FROM students
+                   INNER JOIN phones on phones.student_id = students.id";
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $students = [];
+
+        foreach ($result as $row) {
+            if (!array_key_exists($row["id"], $students)) {
+                $students[$row["id"]] = new Student(
+                    $row["id"],
+                    $row["name"],
+                    new DateTimeImmutable($row['birth_date'])
+                );
+            }
+
+            $phone = new Phone(
+                $row["phone_id"],
+                $row["area_code"],
+                $row["number"]
+            );
+            $students[$row["id"]]->addPhone($phone);
+        }
+
+        return $students;
+    }
+
 
 }

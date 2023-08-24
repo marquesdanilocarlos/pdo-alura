@@ -17,4 +17,6 @@ interface StudentRepositoryInterface
 
     public function remove(Student $student): bool;
 
+    public function getWithPhones(): array;
+
 }
