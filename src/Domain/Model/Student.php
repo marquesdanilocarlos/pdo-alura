@@ -2,6 +2,8 @@
 
 namespace Alura\Pdo\Domain\Model;
 
+use DomainException;
+
 class Student
 {
     private ?int $id;
@@ -15,25 +17,41 @@ class Student
         $this->birthDate = $birthDate;
     }
 
-    public function id(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function name(): string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function birthDate(): \DateTimeInterface
+    public function getBirthDate(): \DateTimeInterface
     {
         return $this->birthDate;
     }
 
-    public function age(): int
+    public function getAge(): int
     {
         return $this->birthDate
             ->diff(new \DateTimeImmutable())
             ->y;
     }
+
+    public function setId(int $id): void
+    {
+        if ($this->id) {
+            throw new DomainException("Este aluno já possui ID definido.");
+        }
+
+        $this->id = $id;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+
 }

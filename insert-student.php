@@ -14,8 +14,8 @@ $student = new Student(
 
 $insert = "INSERT INTO students (name, birth_date) VALUES (:name, :birthDate)";
 $stmt = $connection->prepare($insert);
-$stmt->bindValue(':name', $student->name(), PDO::PARAM_STR);
-$stmt->bindValue(':birthDate', $student->birthDate()->format('Y-m-d'), PDO::PARAM_STR);
+$stmt->bindValue(':name', $student->getName(), PDO::PARAM_STR);
+$stmt->bindValue(':birthDate', $student->getBirthDate()->format('Y-m-d'), PDO::PARAM_STR);
 
 if($stmt->execute()) {
     echo "Aluno inserido!";
