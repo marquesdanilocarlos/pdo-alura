@@ -1,10 +1,11 @@
 <?php
 
+use Alura\Pdo\Database\Connection;
 use Alura\Pdo\Domain\Model\Student;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-$connection = new PDO('mysql:host=db;dbname=fsphp', "root", "a654321");
+$connection = Connection::getInstance();
 $student = new Student(
     null,
     "Danilo Carlos",

@@ -1,8 +1,10 @@
 <?php
 
+use Alura\Pdo\Database\Connection;
+
 require_once __DIR__ . "/vendor/autoload.php";
 
-$connection = new PDO('mysql:host=db;dbname=fsphp', "root", "a654321");
+$connection = Connection::getInstance();
 
 $stmt = $connection->query("SELECT * FROM students WHERE id = 18");
 //$list = $stmt->fetchAll(PDO::FETCH_ASSOC);
